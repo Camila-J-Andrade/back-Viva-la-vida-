@@ -27,6 +27,6 @@ const modelCadastro = connection.define(
     }
 );
 
-modelCadastro.sync({force:true});
+// modelCadastro.sync({force:true});
 
 module.exports = modelCadastro;
