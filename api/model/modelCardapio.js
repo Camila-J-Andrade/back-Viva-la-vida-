@@ -31,6 +31,6 @@ const modelCardapio = connection.define(
 
 
 )
-modelCardapio.sync({force:true});
+// modelCardapio.sync({force:true});
 
 module.exports = modelCardapio;
