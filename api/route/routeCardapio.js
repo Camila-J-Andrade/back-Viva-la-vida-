@@ -132,5 +132,33 @@ router.put('/alterarItem', (req, res)=>{
 
 });
 
+router.delete('/deletarItem/:id_prato', (req, res) => {
+
+    let { id_prato } = req.params;
+
+    modelCardapio.destroy(
+        {where:{id_prato}}
+    ).then(
+        ()=>{
+            return res.status(201).json(
+                {
+                    errorStatus:false,
+                    mensageStatus:'ITEM EXCLUIDO COM SUCESSO'
+                }
+            );
+        }
+    )
+    .catch((error)=>{
+        return res.status(400).json(
+            {
+                errorStatus:true,
+                mensageStatus:'HOUVE UM ERRO AO EXCLUIR O ITEM',
+                errorObject:error
+            }
+        );
+    });
+
+});
+
 
 module.exports = router;
