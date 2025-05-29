@@ -43,7 +43,6 @@ router.get('/listagemItens', async (req, res) => {
         const response = await modelCardapio.findAll();
 
         const dadosFormatados = response.map(item => {
-            // Formata valor_prato como "R$ 23,00"
             const valorFormatado = Number(item.valor_prato).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
@@ -72,11 +71,11 @@ router.get('/listagemItens', async (req, res) => {
 
 
 /* ROTA DE LISTAGEM DE ITEM DO CARDÁPIO POR CÓDIGO DE ITEM*/
-router.get('/listagemItens/:cod_item', (req, res)=>{
+router.get('/listagemItens/:id_prato', (req, res)=>{
 
-    let { cod_item } = req.params;
+    let { id_prato } = req.params;
 
-    modelCardapio.findByPk(cod_item)
+    modelCardapio.findByPk(id_prato)
     .then(
         (response)=>{
             return res.status(201).json(
@@ -93,6 +92,39 @@ router.get('/listagemItens/:cod_item', (req, res)=>{
             {
                 errorStatus:true,
                 mensageStatus:'HOUVE UM ERRO AO RECUPERAR O ITEM DO CARDÁPIO',
+                errorObject:error
+            }
+        );
+    });
+
+});
+
+router.put('/alterarItem', (req, res)=>{
+
+    let { id_prato, nome_prato, valor_prato, descricao_prato } = req.body;
+
+    modelCardapio.update(
+        {
+            nome_prato,
+            valor_prato,
+            descricao_prato
+        },
+        {where:{id_prato}}
+    ).then(
+        ()=>{
+            return res.status(201).json(
+                {
+                    errorStatus:false,
+                    mensageStatus:'ITEM ALTERADO COM SUCESSO'
+                }
+            );
+        }
+    )
+    .catch((error)=>{
+        return res.status(400).json(
+            {
+                errorStatus:true,
+                mensageStatus:'HOUVE UM ERRO AO ALTERAR O ITEM',
                 errorObject:error
             }
         );
